@@ -33,7 +33,7 @@ pipeline = VoiceActivityDetection(scores="vad").instantiate(
     )
 )
 
-uploaded_file = st.file_uploader("Choose a file")
+uploaded_file = st.file_uploader("Choose a file", type=['wav',])
 if uploaded_file is not None:
 
     progress_bar = st.empty()
@@ -42,7 +42,9 @@ if uploaded_file is not None:
         progress_bar.progress(chunk_idx / num_chunks)
 
     vad.progress_hook = progress_hook
-    scores = vad({"audio": uploaded_file})
+    with open(uploaded_file.name, "bw") as localfile:
+        localfile.write(uploaded_file.read())
+    scores = vad({"audio": uploaded_file.name})
 
     progress_bar.empty()
 
