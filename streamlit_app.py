@@ -7,6 +7,8 @@ import numpy as np
 import io
 import base64
 
+from matplotlib.backends.backend_agg import RendererAgg
+_lock = RendererAgg.lock
 
 st.sidebar.image("https://avatars.githubusercontent.com/u/7559051?s=400&v=4")
 
@@ -104,33 +106,35 @@ if uploaded_file is not None:
     output = pipeline(file)
     output.rename_labels(mapping=task["mapping"](output.labels()), copy=False)
 
-    notebook.reset()
-    notebook.crop = Segment(0, min(duration, 60))
-    
-    if more_options:
-        scores = file[task["raw_scores"]] 
-        scores.data = task["activation"](scores.data)
+    with _lock:
 
-        fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
-        fig.set_figwidth(12)
-        fig.set_figheight(5.0)
-        notebook.plot_feature(scores, ax=ax1, time=False)
-        ax1.plot([0, duration - 1.4], [hyper_parameters["onset"], hyper_parameters["onset"]], 'k--')
-        ax1.text(0.1, hyper_parameters["onset"] + 0.04, 'onset')
-        ax1.plot([1.4, len(scores)], [hyper_parameters["offset"], hyper_parameters["offset"]], 'k--')
-        ax1.text(min(duration, 60) - 1.1, hyper_parameters["offset"] + 0.04, 'offset')
-        ax1.set_ylim(-0.1, 1.1)
-        notebook.plot_annotation(output, ax=ax2, time=True, legend=True)
-
-    else:
-        fig, ax = plt.subplots(nrows=1, ncols=1)
-        fig.set_figwidth(12)
-        fig.set_figheight(2.0)
-        notebook.plot_annotation(output, ax=ax, time=True, legend=True)
+        notebook.reset()
+        notebook.crop = Segment(0, min(duration, 60))
         
-    plt.tight_layout()
-    st.pyplot(fig=fig, clear_figure=True)
-
+        if more_options:
+            scores = file[task["raw_scores"]] 
+            scores.data = task["activation"](scores.data)
+            
+            fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1)
+            fig.set_figwidth(12)
+            fig.set_figheight(5.0)
+            notebook.plot_feature(scores, ax=ax1, time=False)
+            ax1.plot([0, duration - 1.4], [hyper_parameters["onset"], hyper_parameters["onset"]], 'k--')
+            ax1.text(0.1, hyper_parameters["onset"] + 0.04, 'onset')
+            ax1.plot([1.4, len(scores)], [hyper_parameters["offset"], hyper_parameters["offset"]], 'k--')
+            ax1.text(min(duration, 60) - 1.1, hyper_parameters["offset"] + 0.04, 'offset')
+            ax1.set_ylim(-0.1, 1.1)
+            notebook.plot_annotation(output, ax=ax2, time=True, legend=True)
+            
+        else:
+            fig, ax = plt.subplots(nrows=1, ncols=1)
+            fig.set_figwidth(12)
+            fig.set_figheight(2.0)
+            notebook.plot_annotation(output, ax=ax, time=True, legend=True)
+            
+            plt.tight_layout()
+            st.pyplot(fig=fig, clear_figure=True)
+            
     with io.StringIO() as fp:
         output.write_rttm(fp)
         content = fp.getvalue()
