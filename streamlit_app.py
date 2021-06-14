@@ -22,7 +22,7 @@ st.markdown(
 This webapp demonstrates the _pyannote.audio_ [model](https://huggingface.co/pyannote/segmentation) introduced in  
 
 > [End-to-end speaker segmentation for overlap-aware resegmentation](http://arxiv.org/abs/2104.04045)  
-by Hervé Bredin and Antoine Laurent (submitted to Interspeech 2021)
+by Hervé Bredin and Antoine Laurent (Interspeech 2021)
 
 Upload an audio file and its first 60 seconds will be processed automatically.
 """
@@ -168,8 +168,8 @@ if uploaded_file is not None:
             fig.set_figheight(2.0)
             notebook.plot_annotation(output, ax=ax, time=True, legend=True)
 
-            plt.tight_layout()
-            st.pyplot(fig=fig, clear_figure=True)
+        plt.tight_layout()
+        st.pyplot(fig=fig, clear_figure=True)
 
     with io.StringIO() as fp:
         output.write_rttm(fp)
