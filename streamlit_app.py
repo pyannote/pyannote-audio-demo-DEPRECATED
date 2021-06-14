@@ -124,7 +124,11 @@ pipeline.instantiate(hyper_parameters)
 uploaded_file = st.file_uploader("")
 if uploaded_file is not None:
 
-    duration = audio.get_duration(uploaded_file)
+    try:
+        duration = audio.get_duration(uploaded_file)
+    except RuntimeError as e:
+        st.error(e)
+        st.stop()
     waveform, sample_rate = audio.crop(uploaded_file, Segment(0, min(duration, 60)))
     file = {"waveform": waveform, "sample_rate": sample_rate, "uri": uploaded_file.name}
 
