@@ -174,6 +174,7 @@ if uploaded_file is not None:
 
         plt.tight_layout()
         st.pyplot(fig=fig, clear_figure=True)
+        plt.close(fig)
 
     with io.StringIO() as fp:
         output.write_rttm(fp)
