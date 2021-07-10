@@ -15,9 +15,9 @@ _lock = RendererAgg.lock
 
 PYANNOTE_LOGO = "https://avatars.githubusercontent.com/u/7559051?s=400&v=4"
 
-#st.beta_set_page_config(
-#   page_title="End-to-end speaker segmentation with pyannote.audio",
-#   page_icon=PYANNOTE_LOGO)
+st.set_page_config(
+    page_title="End-to-end speaker segmentation with pyannote.audio",
+    page_icon=PYANNOTE_LOGO)
 
 st.sidebar.image(PYANNOTE_LOGO)
 
