@@ -29,7 +29,7 @@ This webapp demonstrates the _pyannote.audio_ [model](https://huggingface.co/pya
 
 > [End-to-end speaker segmentation for overlap-aware resegmentation](http://arxiv.org/abs/2104.04045)  
 by Hervé Bredin and Antoine Laurent (Interspeech 2021)
-"""
+""")
 
 with st.beta_expander("Watch introductory video"):
     st.video("https://youtu.be/wDH2rvkjymY")
