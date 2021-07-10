@@ -13,7 +13,13 @@ from matplotlib.backends.backend_agg import RendererAgg
 
 _lock = RendererAgg.lock
 
-st.sidebar.image("https://avatars.githubusercontent.com/u/7559051?s=400&v=4")
+PYANNOTE_LOGO = "https://avatars.githubusercontent.com/u/7559051?s=400&v=4"
+
+st.beta_set_page_config(
+   page_title="End-to-end speaker segmentation with pyannote.audio",
+   page_icon=PYANNOTE_LOGO)
+
+st.sidebar.image(PYANNOTE_LOGO)
 
 st.markdown(
     """
@@ -23,11 +29,16 @@ This webapp demonstrates the _pyannote.audio_ [model](https://huggingface.co/pya
 
 > [End-to-end speaker segmentation for overlap-aware resegmentation](http://arxiv.org/abs/2104.04045)  
 by Hervé Bredin and Antoine Laurent (Interspeech 2021)
+"""
 
+with st.beta_expander("Watch introductory video"):
+    st.video("https://youtu.be/wDH2rvkjymY")
+    
+st.markdown(
+    """
 Upload an audio file and its first 60 seconds will be processed automatically.
 """
 )
-
 
 TASKS = [
     # {"human-readable": "Speaker segmentation",
